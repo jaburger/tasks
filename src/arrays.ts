@@ -83,7 +83,19 @@ export function allRGB(colors: string[]): boolean {
  * And the array [] would become "0=0".
  */
 export function makeMath(addends: number[]): string {
-    return "";
+    if (addends.length === 0) {
+        return "0=0";
+    }
+    const sum: number = addends.reduce(
+        (total: number, num: number): number => total + num,
+        0
+    );
+    //My version of the above lambda before Prettier made it ugly:
+    //const sum: number = addends.reduce((total: number, num: number): number => total + num, 0);
+    let sumString: string = sum.toString() + "=";
+    addends.map((num: number): string => (sumString += num.toString() + "+"));
+    sumString = sumString.substring(0, sumString.length - 1);
+    return sumString;
 }
 
 /**
