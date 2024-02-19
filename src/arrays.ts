@@ -58,7 +58,21 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    return [];
+    messages = messages.map((message: string): string =>
+        message.substring(message.length - 1) === "!"
+            ? message.toUpperCase()
+            : message
+    );
+    //My version of the above lamba function before Prettier made it ugly:
+    //    messages = messages.map((message: string): string => (message.length - 1 === "!") ? (message.toUpperCase()): (message));
+    messages = messages.filter(
+        (message: string): boolean =>
+            message.substring(message.length - 1) !== "?"
+    );
+    //My version of the above lamba function before Prettier made it ugly:
+    //messages = messages.filter((message: string): string => message.substring(message.length - 1) !== "?");
+
+    return messages;
 };
 
 /**
