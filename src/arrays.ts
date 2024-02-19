@@ -14,7 +14,7 @@ export function bookEndList(numbers: number[]): number[] {
  * number has been tripled (multiplied by 3).
  */
 export function tripleNumbers(numbers: number[]): number[] {
-    return numbers.map((num: number) => num * 3);
+    return numbers.map((num: number): number => num * 3);
 }
 
 /**
@@ -22,7 +22,11 @@ export function tripleNumbers(numbers: number[]): number[] {
  * the number cannot be parsed as an integer, convert it to 0 instead.
  */
 export function stringsToIntegers(numbers: string[]): number[] {
-    return [];
+    return numbers.map((num: string): number =>
+        !Number.isNaN(Number(num)) ? Number(num) : 0
+    );
+    //My version before Prettier made it ugly:
+    //return numbers.map((num: string): number => (Number(num) !== NaN) ? (Number(num)) : (0));
 }
 
 /**
