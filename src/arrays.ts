@@ -89,7 +89,20 @@ export function countShortWords(words: string[]): number {
  * then return true.
  */
 export function allRGB(colors: string[]): boolean {
-    return false;
+    if (colors.length === 0) {
+        return true;
+    }
+    let isValid: boolean;
+    isValid = true;
+    colors.map(
+        (color: string): boolean =>
+            (isValid =
+                isValid &&
+                (color === "red" || color === "blue" || color === "green"))
+    );
+    //My version of the lambda above before Prettier made it unreadable:
+    //colors.map((color: string): boolean => isValid = isValid && (color === "red" || color === "blue" || color === "green"));
+    return isValid;
 }
 
 /**
