@@ -158,9 +158,11 @@ export function injectPositive(values: number[]): number[] {
         return value < 0;
     }); //Why does this have to be a boolean if it returns a number?
 
+    const newVals = [...values];
     if (negativeIndex === -1) {
-        return values.splice(values.length, 0, sum);
+        newVals.splice(values.length, 0, sum);
+    } else {
+        newVals.splice(negativeIndex + 1, 0, sum);
     }
-
-    return values.splice(negativeIndex + 1, 0, sum);
+    return newVals;
 }
