@@ -8,6 +8,7 @@ export function bookEndList(numbers: number[]): number[] {
     if (numbers.length === 0) {
         return [];
     }
+
     const newNums: number[] = [numbers[0], numbers[numbers.length - 1]];
     return newNums;
 }
@@ -44,9 +45,11 @@ export const removeDollars = (amounts: string[]): number[] => {
         if (amount.length > 0 && amount.substring(0, 1) === "$") {
             amount = amount.substring(1);
         }
+
         if (Number.isNaN(Number(amount))) {
             return 0;
         }
+
         return Number(amount);
     });
     //Note to self: Multiline Lambda functions need their own curly brackets
@@ -65,6 +68,7 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
     );
     //My version of the above lamba function before Prettier made it ugly:
     //    messages = messages.map((message: string): string => (message.length - 1 === "!") ? (message.toUpperCase()): (message));
+
     messages = messages.filter(
         (message: string): boolean =>
             message.substring(message.length - 1) !== "?"
@@ -92,8 +96,10 @@ export function allRGB(colors: string[]): boolean {
     if (colors.length === 0) {
         return true;
     }
+
     let isValid: boolean;
     isValid = true;
+
     colors.map(
         (color: string): boolean =>
             (isValid =
@@ -102,6 +108,7 @@ export function allRGB(colors: string[]): boolean {
     );
     //My version of the lambda above before Prettier made it unreadable:
     //colors.map((color: string): boolean => isValid = isValid && (color === "red" || color === "blue" || color === "green"));
+
     return isValid;
 }
 
@@ -116,15 +123,18 @@ export function makeMath(addends: number[]): string {
     if (addends.length === 0) {
         return "0=0";
     }
+
     const sum: number = addends.reduce(
         (total: number, num: number): number => total + num,
         0
     );
     //My version of the above lambda before Prettier made it ugly:
     //const sum: number = addends.reduce((total: number, num: number): number => total + num, 0);
+
     let sumString: string = sum.toString() + "=";
     addends.map((num: number): string => (sumString += num.toString() + "+"));
-    sumString = sumString.substring(0, sumString.length - 1);
+    sumString = sumString.substring(0, sumString.length - 1); //Remove the extra "+" at the end
+
     return sumString;
 }
 
@@ -138,5 +148,19 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    return [];
+    let sum: number;
+    sum = 0;
+
+    const negativeIndex: number = values.findIndex((value: number): boolean => {
+        if (value >= 0) {
+            sum += value;
+        }
+        return value < 0;
+    }); //Why does this have to be a boolean if it returns a number?
+
+    if (negativeIndex === -1) {
+        return values.splice(values.length, 0, sum);
+    }
+
+    return values.splice(negativeIndex + 1, 0, sum);
 }
