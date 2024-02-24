@@ -70,7 +70,16 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    const questionsMapped = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options]
+        })
+    );
+
+    return questionsMapped.filter(
+        (question: Question): boolean => question.id !== id
+    );
 }
 
 /***
