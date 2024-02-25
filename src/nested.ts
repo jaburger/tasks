@@ -1,20 +1,20 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
-import { makeBlankQuestion } from "./objects";
+import { duplicateQuestion, makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    const questionsMapped: Question[] = questions.map(
+    const questionsDeepCopy: Question[] = questions.map(
         (question: Question): Question => ({
             ...question,
             options: [...question.options]
         })
     );
 
-    return questionsMapped.filter(
+    return questionsDeepCopy.filter(
         (question: Question): boolean => question.published
     );
 }
@@ -25,14 +25,14 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    const questionsMapped: Question[] = questions.map(
+    const questionsDeepCopy: Question[] = questions.map(
         (question: Question): Question => ({
             ...question,
             options: [...question.options]
         })
     );
 
-    return questionsMapped.filter(
+    return questionsDeepCopy.filter(
         (question: Question): boolean =>
             !(
                 question.body === "" &&
@@ -50,14 +50,14 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
-    const questionsMapped: Question[] = questions.map(
+    const questionsDeepCopy: Question[] = questions.map(
         (question: Question): Question => ({
             ...question,
             options: [...question.options]
         })
     );
 
-    const quest = questionsMapped.find(
+    const quest = questionsDeepCopy.find(
         (question: Question): boolean => question.id === id
     );
     if (quest !== undefined) {
@@ -71,14 +71,14 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    const questionsMapped = questions.map(
+    const questionsDeepCopy = questions.map(
         (question: Question): Question => ({
             ...question,
             options: [...question.options]
         })
     );
 
-    return questionsMapped.filter(
+    return questionsDeepCopy.filter(
         (question: Question): boolean => question.id !== id
     );
 }
@@ -209,14 +209,14 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    const questionsMapped = questions.map(
+    const questionsDeepCopy = questions.map(
         (question: Question): Question => ({
             ...question,
             options: [...question.options]
         })
     );
 
-    return [...questionsMapped, makeBlankQuestion(id, name, type)];
+    return [...questionsDeepCopy, makeBlankQuestion(id, name, type)];
 }
 
 /***
@@ -320,5 +320,23 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number
 ): Question[] {
-    return [];
+    const questionsDeepCopy = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options]
+        })
+    );
+
+    const index = questionsDeepCopy.findIndex(
+        (question: Question): boolean => question.id === targetId
+    );
+    if (index !== -1) {
+        questionsDeepCopy.splice(
+            index + 1,
+            0,
+            duplicateQuestion(newId, { ...questionsDeepCopy[index] })
+        );
+    }
+
+    return questionsDeepCopy;
 }
