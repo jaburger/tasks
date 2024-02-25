@@ -288,7 +288,25 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    return [];
+    return questions.map((question: Question): Question => {
+        if (question.id === targetId) {
+            if (targetOptionIndex === -1) {
+                return {
+                    ...question,
+                    options: [...question.options, newOption]
+                };
+            }
+
+            const temp: Question = {
+                ...question,
+                options: [...question.options]
+            };
+            temp.options.splice(targetOptionIndex, 1, newOption);
+            return temp;
+        } else {
+            return { ...question, options: [...question.options] };
+        }
+    });
 }
 
 /***
