@@ -249,7 +249,27 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType
 ): Question[] {
-    return [];
+    return questions.map((question: Question): Question => {
+        if (question.id === targetId) {
+            if (
+                question.type === "multiple_choice_question" &&
+                newQuestionType === "short_answer_question"
+            ) {
+                return {
+                    ...question,
+                    type: newQuestionType,
+                    options: []
+                };
+            }
+            return {
+                ...question,
+                type: newQuestionType,
+                options: [...question.options]
+            };
+        } else {
+            return { ...question, options: [...question.options] };
+        }
+    });
 }
 
 /**
