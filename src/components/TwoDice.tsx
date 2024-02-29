@@ -28,11 +28,11 @@ export function TwoDice(): JSX.Element {
             <span data-testid="left-die">{leftDie}</span>
             <Button onClick={rollRight}>Roll Right</Button>
             <span data-testid="right-die">{rightDie}</span>
-            {leftDie === rightDie && leftDie !== 1 ? (
+
+            {leftDie === rightDie && leftDie !== 1 && (
                 <div>Congrats, You Win!</div>
-            ) : (
-                <div>Sorry, You Lose!</div>
             )}
+            {leftDie === 1 && rightDie === 1 && <div>Sorry, You Lose!</div>}
         </div>
     );
 }
